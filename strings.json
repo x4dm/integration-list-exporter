@@ -1,0 +1,16 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Integration List Exporter Configuration",
+        "description": "Configure when to export your integration list daily.",
+        "data": {
+          "update_time": "Daily Export Time (HH:MM, 24-hour format)"
+        }
+      }
+    },
+    "error": {
+      "invalid_time": "Please enter a valid time in HH:MM format (00:00 to 23:59)"
+    }
+  }
+}

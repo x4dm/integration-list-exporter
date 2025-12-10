@@ -1,0 +1,12 @@
+{
+  "domain": "integration_list_exporter",
+  "name": "Integration List Exporter",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/x4dm/integration_list_exporter",
+  "integration_type": "service",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/x4dm/integration_list_exporter/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

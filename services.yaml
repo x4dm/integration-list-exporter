@@ -1,0 +1,4 @@
+export_integrations:
+  name: Export Integrations
+  description: Manually trigger the export of integrations list to CSV file.
+  fields: {}
