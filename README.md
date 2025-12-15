@@ -1,6 +1,6 @@
 # Integration List Exporter
 
-A Home Assistant custom integration that exports all your installed integrations (core and custom) to a CSV file, along with system information.  This integration was created by Claude.
+A Home Assistant custom integration that exports all your installed integrations (core and custom) to a CSV file, along with system information.
 
 ## Features
 
@@ -45,13 +45,13 @@ The integration will automatically export your integrations list once per day at
 You can manually trigger an export at any time:
 
 **Via Developer Tools:**
-1. Go to **Developer Tools** → **Services**
+1. Go to **Developer Tools** → **Actions**
 2. Select `integration_list_exporter.export_integrations`
-3. Click **Call Service**
+3. Click **Perform Action**
 
 **Via Automation:**
 ```yaml
-service: integration_list_exporter.export_integrations
+action: integration_list_exporter.export_integrations
 ```
 
 ## Output File
@@ -80,10 +80,15 @@ Automation,N/A,No
 - 📊 Feed the CSV into AI tools to analyze upgrade safety
 - 📝 Documentation and backup purposes
 - 🔍 Auditing your installed integrations
+- 📈 Tracking integration versions over time
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Support
 
-If you encounter any issues, please [open an issue](https://github.com/x4dm/integration_list_exporter/issues) on GitHub, but I likely won't be supporting it.
+If you encounter any issues, please [open an issue](https://github.com/x4dm/integration-list-exporter/issues) on GitHub.
 
 ## License
 
