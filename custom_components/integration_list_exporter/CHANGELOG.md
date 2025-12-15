@@ -48,6 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Manual export service (`integration_list_exporter.export_integrations`)
 - HACS integration support
 
-[1.1.1]: https://github.com/YOUR_USERNAME/integration-list-exporter/releases/tag/v1.1.1
-[1.1.0]: https://github.com/YOUR_USERNAME/integration-list-exporter/releases/tag/v1.1.0
-[1.0.0]: https://github.com/YOUR_USERNAME/integration-list-exporter/releases/tag/v1.0.0
+[1.1.1]: https://github.com/x4dm/integration-list-exporter/releases/tag/v1.1.1
+[1.1.0]: https://github.com/x4dm/integration-list-exporter/releases/tag/v1.1.0
+[1.0.0]: https://github.com/x4dm/integration-list-exporter/releases/tag/v1.0.0
