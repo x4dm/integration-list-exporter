@@ -1,5 +1,6 @@
 """Integration exporter functionality."""
 import csv
+import io
 import logging
 import os
 from datetime import datetime
@@ -7,7 +8,8 @@ from datetime import datetime
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.loader import async_get_custom_components, async_get_integration
-from homeassistant.components.hassio import is_hassio
+from homeassistant.helpers.hassio import is_hassio
+from homeassistant.util import dt as dt_util
 
 from .const import CSV_FILENAME
 
@@ -36,46 +38,57 @@ class IntegrationExporter:
             # Gather integration information
             integrations = await self._get_integrations()
             
-            # Write CSV file
-            with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
-                writer = csv.writer(csvfile)
-                
-                # Write system information section
-                writer.writerow(["System Information"])
-                writer.writerow(["Generated", datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
-                
-                for key, value in system_info.items():
-                    writer.writerow([key, value])
-                
-                # Empty row separator
-                writer.writerow([])
-                
-                # Write add-ons section
-                writer.writerow(["Add-on Name", "Version"])
-                if addons:
-                    for addon in sorted(addons, key=lambda x: x['name'].lower()):
-                        writer.writerow([addon['name'], addon['version']])
-                else:
-                    writer.writerow(["No add-ons installed or supervisor not available", ""])
-                
-                # Empty row separator
-                writer.writerow([])
-                
-                # Write integration headers
-                writer.writerow(["Integration Name", "Version", "Custom Integration"])
-                
-                # Write integration data
-                for integration in sorted(integrations, key=lambda x: x['name'].lower()):
-                    writer.writerow([
-                        integration['name'],
-                        integration['version'],
-                        integration['custom']
-                    ])
+            # Build CSV content in memory
+            output = io.StringIO()
+            writer = csv.writer(output)
+            
+            # Write system information section
+            writer.writerow(["System Information"])
+            writer.writerow(["Generated", datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
+            
+            for key, value in system_info.items():
+                writer.writerow([key, value])
+            
+            # Empty row separator
+            writer.writerow([])
+            
+            # Write add-ons section
+            writer.writerow(["Add-on Name", "Version"])
+            if addons:
+                for addon in sorted(addons, key=lambda x: x['name'].lower()):
+                    writer.writerow([addon['name'], addon['version']])
+            else:
+                writer.writerow(["No add-ons installed or supervisor not available", ""])
+            
+            # Empty row separator
+            writer.writerow([])
+            
+            # Write integration headers
+            writer.writerow(["Integration Name", "Version", "Custom Integration"])
+            
+            # Write integration data
+            for integration in sorted(integrations, key=lambda x: x['name'].lower()):
+                writer.writerow([
+                    integration['name'],
+                    integration['version'],
+                    integration['custom']
+                ])
+            
+            # Write to file asynchronously
+            csv_content = output.getvalue()
+            await self.hass.async_add_executor_job(
+                self._write_file, csv_path, csv_content
+            )
             
             _LOGGER.info(f"Successfully generated {CSV_FILENAME} with {len(integrations)} integrations and {len(addons)} add-ons")
             
         except Exception as e:
             _LOGGER.error(f"Error generating CSV: {e}", exc_info=True)
+    
+    def _write_file(self, path: str, content: str) -> None:
+        """Write content to file (runs in executor)."""
+        with open(path, 'w', newline='', encoding='utf-8') as f:
+            f.write(content)
 
     async def _get_system_info(self) -> dict:
         """Get system information."""
